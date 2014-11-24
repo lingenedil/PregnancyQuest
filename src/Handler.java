@@ -6,8 +6,11 @@ import java.util.Random;
  */
 public class Handler {
     
-    protected int rageLevel;
+    private int rageLevel;
     Random random = new Random();
+    private String time = "";
+    private int wallet;
+    private int day = 1;
     
     public Handler() {  
     }
@@ -48,6 +51,12 @@ public class Handler {
         addRage(toAdd);
     }
     
+    public void randomSubtractRage() {
+        int toSubtract = random.nextInt(66);
+        
+        subtractRage(toSubtract);
+    }
+    
     public void lowCompliment() {
         int toSubtract = random.nextInt(26);
         
@@ -66,11 +75,45 @@ public class Handler {
         subtractRage(toSubtract);
     }
     
-    public void randomSubtractRage() {
-        int toSubtract = random.nextInt(66);
-        
-        subtractRage(toSubtract);
+    public int getRage() {
+        return rageLevel;
     }
     
+    public void help() {
+        System.out.println("!q: Quit the game. \n !h: List commands. \n !t: Check your watch. \n !w: Look in your wallet. \n !1-3: Perform an action.");
+    }
     
+    public String setTime(String newTime) {
+        time = newTime;
+        
+        return time;
+    }
+    
+    public String getTime() {
+        return time;
+    }
+    
+    public int addCash(int toAdd) {
+        wallet += toAdd;
+        
+        return wallet;
+    }
+    
+    public int subtractCash(int toSubtract) {
+        wallet -= toSubtract;
+        
+        return wallet;
+    }
+    
+    public int getCash() {
+        return wallet;
+    }
+    
+    public int nextDay() {
+        return day++;
+    }
+    
+    public int getDay() {
+        return day;
+    }
 }
