@@ -36,7 +36,7 @@ public class Controller {
             switch (input) {
                 case "Y":
                 case "y":
-                    start();
+                    event.intro();
                     break;
                 case "N":
                 case "n":
