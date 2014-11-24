@@ -30,7 +30,7 @@ public class Controller {
             event.gameOver();
         
         else if (handler.getDay() == 280 && handler.getRage() < 100) {
-            System.out.println("You are sitting at the dinner table with your wife. She looks at you nervously and says, \n \"Honey, we need to talk...\" \n GAME OVER. PLAY AGAIN? Y/N");
+            System.out.println("You are sitting at the dinner table with your wife. She looks at you nervously and says, \"Honey, we need to talk...\" \nGAME OVER. PLAY AGAIN? Y/N");
             input = scan.next();
         
             switch (input) {
