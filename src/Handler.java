@@ -6,13 +6,23 @@ import java.util.Random;
  */
 public class Handler {
     
-    private int rageLevel;
     Random random = new Random();
+    Event event = new Event();
+    private int rageLevel;
     private String time = "";
     private int wallet;
     private int day = 1;
+    private String weekday = "";
+    private int weekdayInt;
+    private int randomEvent;
     
     public Handler() {  
+    }
+    
+    public int setRage(int rage) {
+        rageLevel = rage;
+        
+        return rageLevel;
     }
     
     public int addRage(int toAdd) {
@@ -80,7 +90,7 @@ public class Handler {
     }
     
     public void help() {
-        System.out.println("!q: Quit the game. \n !h: List commands. \n !t: Check your watch. \n !w: Look in your wallet. \n !1-3: Perform an action.");
+        System.out.println("!q: Quit the game. \n!h: List commands. \n!t: Check your watch for the time and date. \n!w: Look in your wallet. \n!1-3: Perform an action.");
     }
     
     public String setTime(String newTime) {
@@ -91,6 +101,12 @@ public class Handler {
     
     public String getTime() {
         return time;
+    }
+    
+    public int setWallet(int newWallet) {
+        wallet = newWallet;
+        
+        return wallet;
     }
     
     public int addCash(int toAdd) {
@@ -109,11 +125,79 @@ public class Handler {
         return wallet;
     }
     
+    public int randomWeekday() {
+        weekdayInt = random.nextInt(7);
+        
+        return weekdayInt;
+    }
+    
+    public String setWeekday(int variable) {
+
+        switch (variable) {
+            case 0:
+                weekday = "Monday";
+                break;
+            case 1:
+                weekday = "Tuesday";
+                break;
+            case 2:
+                weekday = "Wednesday";
+                break;
+            case 3:
+                weekday = "Thursday";
+                break;
+            case 4:
+                weekday = "Friday";
+                break;
+            case 5:
+                weekday = "Saturday";
+                break;
+            case 6:
+                weekday = "Sunday";
+                break;
+        }
+        
+        return weekday;
+    }
+    
+    public int nextWeekday() {
+        if (weekdayInt < 6)
+            weekdayInt++;
+        else
+            weekdayInt = 0;
+        
+        return weekdayInt;
+    }
+    
+    public String getWeekday() {
+        return weekday;
+    }
+    
+    public int setDay(int newDay) {
+        day = newDay;
+        
+        return day;
+    }
+    
     public int nextDay() {
         return day++;
     }
     
     public int getDay() {
         return day;
+    }
+    
+    public void reset() {
+        setRage(0);
+        setTime("");
+        setWallet(0);
+        setDay(1);
+        setWeekday(randomWeekday());
+    }
+    
+    public int randomEventGenerator() {
+        randomEvent = random.nextInt(event.getNumberOfEvents());
+        
+        return randomEvent;
     }
 }

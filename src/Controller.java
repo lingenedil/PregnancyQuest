@@ -16,11 +16,14 @@ public class Controller {
     
     public void start() {
         event.intro();
+        
+        main();
     }
     
     public final void main() {
-        while (handler.getDay() <= 280 && handler.getRage() < 100) {
+        while (handler.getDay() < 280 && handler.getRage() < 100) {
             handler.nextDay();
+            handler.setWeekday(handler.nextWeekday());
         }
         
         System.out.println("You are sitting at the dinner table with your wife. She looks at you nervously and says, \n \"Honey, we need to talk...\" \n GAME OVER. PLAY AGAIN? Y/N");
