@@ -32,6 +32,10 @@ public class Event {
             handler.setWeekday(handler.nextWeekday());
             System.out.println(handler.getWeekday() + ", DAY " + handler.getDay() + ":");
             
+            //Pay bills once a month.
+            if ((handler.getDay() % 30) == 0)
+                handler.payBills();
+            
             //Sends player to sleep on couch if the rage meter is >= 90.
             if (handler.getRage() >= 90 && handler.getRage() < 100)
                 sleepOnCouch();
@@ -45,6 +49,33 @@ public class Event {
                     //Calls a weekend event if an RNG is > 25, otherwise player gets a break.
                     if (random.nextInt(100) > 25) {
                         randomWeekendEvent();
+                        
+                        //Adds to rage meter if a randomly generated number is < 5.
+                        if (random.nextInt(100) < 5) {
+                        handler.mediumInsult();
+                    
+                        //Adds to rage meter again if a randomly generated number equals 74.
+                        if (random.nextInt(75) == 74)
+                            handler.highInsult();
+                        }
+                        
+                        //Calls a night event if an RNG is > 15.
+                        else if (random.nextInt(100) > 15)
+                            randomNightEvent();
+                    }
+                    else {
+                        if (random.nextInt(100) > 25)
+                            randomNightEvent();
+                        else
+                            playerBreak();
+                    }
+                    break;
+                case "Thursday":
+                    handler.addCash(handler.getPayCheck());
+                    handler.resetPayCheck();
+                    //Calls a work event if an RNG is > 25, otherwise player gets a break.
+                    if (random.nextInt(100) > 25) {
+                        randomWorkEvent();
                         
                         //Adds to rage meter if a randomly generated number is < 5.
                         if (random.nextInt(100) < 5) {
@@ -126,32 +157,29 @@ public class Event {
      * Start method - the very beginning of the actual game. Adds cash to wallet, randomly sets how upset your wife is, and sets the time to 7:00 PM.
      */
     public final void start() {
-        handler.addCash(1650);
+        handler.addCash(5650);
         handler.randomAddRage();
         handler.setTime("7:00 PM");
         System.out.println("DAY " + handler.getDay() + ": " + "\nYou are sitting at the dinner table with your wife. She looks at you nervously and says, \"Honey, we need to talk...\"");
-        System.out.println("!1: \"Yes, dear?\" !2 \"What is it?\" !3 \"Not right now.\"");
+        System.out.println("1: \"Yes, dear?\" 2: \"What is it?\" 3: \"Not right now.\"");
         input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 startGetBox();
                 break;
-            case "!2":
+            case "2":
                 startGetBox2();
                 break;
-            case "!3":
+            case "3":
                 System.out.println("She gives you a look crossed with displeasure and disappointment. \"Never mind,\" she says, before leaving in a huff.");
                 gameOver();
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -170,29 +198,26 @@ public class Event {
     public void startGetBox() {
         handler.lowCompliment();
         System.out.println("She reaches under her chair and pulls out a small wrapped box. She places it on the table and nudges it towards you.");
-        System.out.println("!1: Open the box. !2: \"What's this?\" !3: \"I don't have time for this.\"");
+        System.out.println("1: Open the box. 2: \"What's this?\" 3: \"I don't have time for this.\"");
         input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 startOpenBox();
                 break;
-            case "!2":
+            case "2":
                 startAskBox();
                 break;
-            case "!3":
+            case "3":
                 System.out.println("She gives you a look crossed with displeasure and disappointment. \"Never mind,\" she says, before leaving in a huff, the box unmoved on the table.");
                 gameOver();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -211,29 +236,26 @@ public class Event {
     public void startGetBox2() {
         handler.mediumInsult();
         System.out.println("She gives you a sour look before saying, \"There's something important I have to tell you...\" \nShe reaches under her chair and pulls out a small wrapped box. She places it on the table and nudges it towards you.");
-        System.out.println("!1: Open the box. !2: \"What's this?\" !3: \"I don't have time for this.\"");
+        System.out.println("1: Open the box. 2: \"What's this?\" 3: \"I don't have time for this.\"");
         input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 startOpenBox();
                 break;
-            case "!2":
+            case "2":
                 startAskBox();
                 break;
-            case "!3":
+            case "3":
                 System.out.println("She gives you a look crossed with displeasure and disappointment. \"Never mind,\" she says, before leaving in a huff, the box unmoved on the table.");
                 gameOver();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -252,29 +274,26 @@ public class Event {
     public void startAskBox() {
         handler.lowInsult();
         System.out.println("She looks at you nervously. \"Open it and you'll find out,\" she says, her voice shaking with anticipation.");
-        System.out.println("!1: Open the box. !2: \"What's this?\" !3: \"I don't have time for this.\"");
+        System.out.println("1: Open the box. 2: \"What's this?\" 3: \"I don't have time for this.\"");
         input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 startOpenBox();
                 break;
-            case "!2":
+            case "2":
                 startAskBox2();
                 break;
-            case "!3":
+            case "3":
                 System.out.println("She gives you a look crossed with displeasure and disappointment. \"Never mind,\" she says, before leaving in a huff, the box unmoved on the table.");
                 gameOver();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -293,29 +312,26 @@ public class Event {
     public void startAskBox2() {
         handler.highInsult();
         System.out.println("Frustration begins to increasingly cross her features. \"Open it and you'll find out,\" she says, her voice growing more and more upset.");
-        System.out.println("!1: Open the box. !2: \"What's this?\" !3: \"I don't have time for this.\"");
+        System.out.println("1: Open the box. 2: \"What's this?\" 3: \"I don't have time for this.\"");
         input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 startOpenBox();
                 break;
-            case "!2":
+            case "2":
                 startAskedTooMuch();
                 break;
-            case "!3":
+            case "3":
                 System.out.println("She gives you a look crossed with displeasure and disappointment. \"Never mind,\" she says, before leaving in a huff, the box unmoved on the table.");
                 gameOver();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -336,26 +352,23 @@ public class Event {
         
         if (handler.getRage() >= 90) {
             System.out.println("\"I can't deal with this right now. Open the box or don't. I don't care anymore,\" she says with anger before leaving the room.");
-            System.out.println("!1: Open the box. !2: Leave the room.");
+            System.out.println("1: Open the box. 2: Leave the room.");
             input = scan.next();
             
             while (!input.equals("!q")){
             
                 switch (input) {
-                    case "!1":
+                    case "1":
                         startOpenBox2();
                         break;
-                    case "!2":
+                    case "2":
                         System.out.println("You leave the room and the house, leaving your wife to her anger.");
                         gameOver();
                         break;
-                    case "!h":
+                    case "h":
                         handler.help();
                         break;
-                    case "!t":
-                        System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                        break;
-                    case "!w":
+                    case "w":
                         System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                         break;
                     default:
@@ -377,28 +390,25 @@ public class Event {
      */
     public void startOpenBox() {
         System.out.println("You reach for the box and open it. Inside is a pair of very small shoes - the right size for a newborn. You glance up at your wife. She is looking at you with nervous excitement.");
-        System.out.println("!1: Say nothing. !2: \"Are you...?\" !3: \"What is this?\"");
+        System.out.println("1: Say nothing. 2: \"Are you...?\" 3: \"What is this?\"");
         input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 startSaidNothingBox();
                 break;
-            case "!2":
+            case "2":
                 startYes();
                 break;
-            case "!3":
+            case "3":
                 startShoes();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -417,28 +427,25 @@ public class Event {
     public void startOpenBox2() {
         handler.lowCompliment();
         System.out.println("You reach for the box and open it. Inside is a pair of very small shoes - the right size for a newborn. You glance up as your wife walks back into the room, summoned by the noise of the wrapping paper. She looks at you nervously, her anger replaced by anticipation.");
-        System.out.println("!1: Say nothing. !2: \"Are you...?\" !3: \"What is this?\"");
+        System.out.println("1: Say nothing. 2: \"Are you...?\" 3: \"What is this?\"");
         input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 startSaidNothingBox();
                 break;
-            case "!2":
+            case "2":
                 startYes();
                 break;
-            case "!3":
+            case "3":
                 startShoes();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -456,31 +463,28 @@ public class Event {
      */
     public void startYes() {
         System.out.println("She glances down and fidgets. \"Yes... I was afraid to tell you...\"");
-        System.out.println("!1: Say nothing. !2: \"This is wonderful news!\" !3: \"I don't think we're ready for this...\"");
+        System.out.println("1: Say nothing. 2: \"This is wonderful news!\" 3: \"I don't think we're ready for this...\"");
         input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 startSaidNothingYes();
                 break;
-            case "!2":
+            case "2":
                 handler.highCompliment();
                 System.out.println("She gazes at you with relief and joy. \n\"We have so much to do! We'll get started tomorrow.\" She motions for you to come to bed, a smile on her lips.");
                 mainGame();
                 break;
-            case "!3":
+            case "3":
                 System.out.println("She briefly glances back up at you with a heartbroken look. \"I... I'll be right back...\" she mutters before rushing out of the room.");
                 gameOver();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -498,28 +502,25 @@ public class Event {
      */
     public void startShoes() {
         System.out.println("She looks at you nervously. \"Shoes... For a baby...\" she trails off, her voice weak and nervous.");
-        System.out.println("!1: Say nothing. !2: \"Are you...?\" !3: \"Why are you giving me baby shoes?\"");
+        System.out.println("1: Say nothing. 2: \"Are you...?\" 3: \"Why are you giving me baby shoes?\"");
         input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 startSaidNothingShoes();
                 break;
-            case "!2":
+            case "2":
                 startYes();
                 break;
-            case "!3":
+            case "3":
                 startAskedShoes();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -537,31 +538,28 @@ public class Event {
      */
     public void startAskedShoes() {
         System.out.println("Her voice shakes and cracks as she speaks. \"Honey... I'm.. We're having a baby.\"");
-        System.out.println("!1: Say nothing. !2: \"This is wonderful news!\" !3: \"I don't think we're ready for this...\"");
+        System.out.println("1: Say nothing. 2: \"This is wonderful news!\" 3: \"I don't think we're ready for this...\"");
         input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 startSaidNothingYes();
                 break;
-            case "!2":
+            case "2":
                 handler.highCompliment();
                 System.out.println("She gazes at you with relief and joy. \"We have so much to do! We'll get started tomorrow.\" She motions for you to come to bed, a smile on her lips.");
                 mainGame();
                 break;
-            case "!3":
+            case "3":
                 System.out.println("She briefly glances back up at you with a heartbroken look. \"I... I'll be right back...\" she mutters before rushing out of the room.");
                 gameOver();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -580,13 +578,13 @@ public class Event {
     public void startSaidNothingBox() {
         handler.mediumInsult();
         System.out.println("Frustration crosses your wife's face. \"Aren't you going to say anything?\"");
-        System.out.println("!1: Say nothing. !2: \"Are you...?\" !3: \"What is this?\"");
+        System.out.println("1: Say nothing. 2: \"Are you...?\" 3: \"What is this?\"");
         input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 if (handler.getRage() == 100) {
                     System.out.println("Your wife silently leaves the room, her face marked with anger.");
                     gameOver();
@@ -594,19 +592,16 @@ public class Event {
                 else
                     startSaidNothingBox();
                 break;
-            case "!2":
+            case "2":
                 startYes();
                 break;
-            case "!3":
+            case "3":
                 startShoes();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -625,13 +620,13 @@ public class Event {
     public void startSaidNothingYes() {
         handler.mediumInsult();
         System.out.println("Frustration crosses your wife's face. \"Aren't you going to say anything?\"");
-        System.out.println("!1: Say nothing. !2: \"This is wonderful news!\" !3: \"I don't think we're ready for this...\"");
+        System.out.println("1: Say nothing. 2: \"This is wonderful news!\" 3: \"I don't think we're ready for this...\"");
         input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 if (handler.getRage() == 100) {
                     System.out.println("Your wife looks at you with a heartbroken yet angry look and silently leaves the room.");
                     gameOver();
@@ -639,22 +634,19 @@ public class Event {
                 else
                     startSaidNothingYes();
                 break;
-            case "!2":
+            case "2":
                 handler.highCompliment();
                 System.out.println("She gazes at you with relief and joy. \n\"We have so much to do! We'll get started tomorrow.\" She motions for you to come to bed, a smile on her lips.");
                 mainGame();
                 break;
-            case "!3":
+            case "3":
                 System.out.println("She briefly glances back up at you with a heartbroken look. \"I... I'll be right back...\" she mutters before rushing out of the room.");
                 gameOver();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -673,13 +665,13 @@ public class Event {
     public void startSaidNothingShoes() {
         handler.mediumInsult();
         System.out.println("Frustration crosses your wife's face. \"Aren't you going to say anything?\"");
-        System.out.println("!1: Say nothing. !2: \"Are you...?\" !3: \"Why are you giving me baby shoes?\"");
+        System.out.println("1: Say nothing. 2: \"Are you...?\" 3: \"Why are you giving me baby shoes?\"");
         input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 if (handler.getRage() == 100) {
                     System.out.println("Your wife looks at you with a heartbroken yet angry look and silently leaves the room.");
                     gameOver();
@@ -687,19 +679,16 @@ public class Event {
                 else
                     startSaidNothingShoes();
                 break;
-            case "!2":
+            case "2":
                 startYes();
                 break;
-            case "!3":
+            case "3":
                 startAskedShoes();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -718,30 +707,27 @@ public class Event {
     public void pickleJuiceNightEvent() {
         handler.setTime("2:00 AM");
         System.out.println("Your wife nudges you awake. \"Honey... We're out of pickles.\"");
-        System.out.println("!1: \"What time is it?\" !2: Get dressed and head to the store. !3: Ignore your wife and go back to sleep.");
+        System.out.println("1: \"What time is it?\" 2: Get dressed and head to the store. 3: Ignore your wife and go back to sleep.");
         input = scan.next();
         
-        while (!input.equals("!q")){
-            
+        while (!input.equals("q")){
+           
         switch (input) {
-            case "!1":
+            case "1":
                 pickleJuice2AM();
                 break;
-            case "!2":
+            case "2":
                 pickleJuiceGoToStore();
                 break;
-            case "!3":
+            case "3":
                 handler.highInsult();
                 System.out.println("You ignore your wife and quickly fall back asleep. You might regret this...");
                 mainGame();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -759,32 +745,29 @@ public class Event {
      */
     public void pickleJuice2AM() {
         System.out.println("She looks at you pleadingly. \"It's 2:00 AM...\"");
-        System.out.println("!1: \"What do you want me to do? It's too late to go out and get pickles.\" !2: Get dressed and head to the store. !3: Ignore your wife and go back to sleep.");
+        System.out.println("1: \"What do you want me to do? It's too late to go out and get pickles.\" 2: Get dressed and head to the store. 3: Ignore your wife and go back to sleep.");
         input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 handler.highInsult();
                 System.out.println("Your wife looks at you with disdain. \"Fine,\" she says, \"I'll just wait until the morning.\"\nMaybe you should have gone to get her pickles...");
                 mainGame();
                 break;
-            case "!2":
+            case "2":
                 pickleJuiceGoToStore();
                 break;
-            case "!3":
+            case "3":
                 handler.highInsult();
                 System.out.println("You ignore your wife and quickly fall back asleep. You might regret this...");
                 mainGame();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -825,8 +808,10 @@ public class Event {
             longLine();
         
         //Sets the time taken to 15 minutes if no long line.
-        else
+        else {
             handler.setTimeTaken(15);
+            handler.setTime("2:15 AM");
+        }
         
         //If unable to get the item, goes home empty-handed.
         if (!handler.gotItem()) {
@@ -849,29 +834,26 @@ public class Event {
         if (handler.getTimeTaken() > 35) {
             handler.mediumInsult();
             System.out.println("You come home to find your wife awaiting your arrival. With a sour look on her face, she asks, \"What took you so long?\"");
-            System.out.println("!1: Hand your wife the pickles and apologize. !2: Hand your wife the pickles and say nothing.");
+            System.out.println("1: Hand your wife the pickles and apologize. 2: Hand your wife the pickles and say nothing.");
             input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 handler.lowCompliment();
                 System.out.println("You hand your wife the pickles and apologize for taking so long, explaining your reasons. She seems to calm down, albeit slightly.");
                 mainGame();
                 break;
-            case "!2":
+            case "2":
                 handler.highInsult();
                 System.out.println("You silently hand your wife the pickles and leave the room, leaving her to her anger... And her pickles.");
                 mainGame();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -899,29 +881,26 @@ public class Event {
     public void cameHomeEmptyHanded() {
         handler.highInsult();
         System.out.println("You return home empty-handed, your task failed. Your wife glares at you, her face full of anger rather than disappointment.");
-        System.out.println("!1: Apologize to your wife. !2: Say nothing.");
+        System.out.println("1: Apologize to your wife. 2: Say nothing.");
         input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 handler.lowCompliment();
                 System.out.println("You apologize to your wife for having failed, and attempt to explain your reasons for having done so. She seems to calm down, albeit slightly.");
                 mainGame();
                 break;
-            case "!2":
+            case "2":
                 handler.highInsult();
                 System.out.println("You say nothing to your wife, leaving her to her anger.");
                 mainGame();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:
@@ -956,25 +935,22 @@ public class Event {
      */
     public boolean soldOut() {
         System.out.println("The store is sold out of the item you're after. Should you check another store... Or return home empty-handed?");
-        System.out.println("!1: Drive to another store. !2: Return home empty-handed.");
+        System.out.println("1: Drive to another store. 2: Return home empty-handed.");
         
         input = scan.next();
         
-        while (!input.equals("!q")){
+        while (!input.equals("q")){
             
         switch (input) {
-            case "!1":
+            case "1":
                 return true;
-            case "!2":
+            case "2":
                 cameHomeEmptyHanded();
                 break;
-            case "!h":
+            case "h":
                 handler.help();
                 break;
-            case "!t":
-                System.out.println("You look at your watch. It is currently " + handler.getTime() +  " on " + handler.getWeekday() + ".");
-                break;
-            case "!w":
+            case "w":
                 System.out.println("You look in your wallet. You currently have $" + handler.getCash() + ".");
                 break;
             default:

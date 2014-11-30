@@ -25,6 +25,8 @@ public class Handler {
     private int timeTaken;
     //Variable to denote whether the item-getting event was successful.
     private boolean gotItem;
+    //Variable to contain the weekly paycheck.
+    private int payCheck;
     
     /**
      * Constructor method for the Handler class.
@@ -150,7 +152,7 @@ public class Handler {
      * Method to print out help dialogue.
      */
     public void help() {
-        System.out.println("!q: Quit the game. \n!h: List commands. \n!t: Check your watch for the time and date. \n!w: Look in your wallet. \n!1-3: Perform an action.");
+        System.out.println("q: Quit the game. \nh: List commands. \nw: Look in your wallet. \n1-3: Perform an action.");
     }
     
     /**
@@ -384,6 +386,71 @@ public class Handler {
     }
     
     /**
+     * Adds money to weekly paycheck.
+     * @param toAdd Amount to add.
+     * @return Returns the paycheck.
+     */
+    public int addToPaycheck(int toAdd) {
+        payCheck += toAdd;
+        
+        return payCheck;
+    }
+    
+    /**
+     * Removes money from weekly paycheck.
+     * @param toSubtract Amount to remove.
+     * @return Returns the paycheck.
+     */
+    public int subtractFromPaycheck(int toSubtract) {
+        payCheck -= toSubtract;
+        
+        return payCheck;
+    }
+    
+    /**
+     * Gets the paycheck.
+     * @return Returns the paycheck.
+     */
+    public int getPayCheck() {
+        return payCheck;
+    }
+    
+    /**
+     * Resets the paycheck to the default value.
+     * @return Returns the paycheck.
+     */
+    public int resetPayCheck() {
+        payCheck = 1575;
+        
+        return payCheck;
+    }
+    
+    /**
+     * Pays the bills.
+     * @return
+     */
+    public int payBills() {
+        if (wallet >= 850)
+            subtractCash(850);
+        else {
+            System.out.println("You can't afford to pay your bills this month.");
+            highInsult();
+        }
+        
+        return wallet;
+    }
+    
+    /**
+     * Subtracts money from paycheck if time at work is missed.
+     * @param hoursToMiss
+     */
+    public void missedWork(int hoursToMiss) {
+        int lostTime = hoursToMiss * 9;
+        
+        subtractFromPaycheck(lostTime);
+    }
+    
+    /**
      * Method to reset all variables at new game start.
      */
     public void reset() {
@@ -392,5 +459,6 @@ public class Handler {
         setWallet(0);
         setDay(1);
         setWeekday(randomWeekday());
+        resetPayCheck();
     }
 }
